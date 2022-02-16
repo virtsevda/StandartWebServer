@@ -32,6 +32,7 @@ func main() {
 		if err !=nil{
 			log.Println("Can not find configs file. Using default values:",err)
 		}
+		log.Println("Load toml")
 	}
 
 	if format == "env"{
@@ -41,6 +42,7 @@ func main() {
 		}
 		config.BindAddr = os.Getenv("bind_addr")
 		config.LoggerLevel = os.Getenv("logger_level")
+		config.Storage.DatabaseURI = os.Getenv("databse_uri")
 	}
 
 

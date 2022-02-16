@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"github.com/virtsevda/StandartWebServer/storage"
 )
 
 //Base API server instace
@@ -13,6 +14,7 @@ type API struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	storage *storage.Storage
 }
 
 //Api constructor: buil base API instace
@@ -36,7 +38,10 @@ func (api *API) Start() error{
 	//Конфигирурируем роутер
 	api.configureRouterField()
 
-	//
-
+	//Конфигирурируем Storage
+	if err:=api.configureStorageField();err!=nil{
+		return err
+	}
+	
 	return http.ListenAndServe(api.config.BindAddr,api.router)
 }
