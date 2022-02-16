@@ -1,6 +1,11 @@
 package api
 
-import "github.com/sirupsen/logrus"
+import (
+	"net/http"
+
+	_ "github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
+)
 
 //Пытаем сконфигурировать api instance
 func (a *API) configureLoggerField() error {
@@ -12,4 +17,13 @@ func (a *API) configureLoggerField() error {
 
 	a.logger.SetLevel(log_level)
 	return nil
+}
+
+//Пытаемся сконфигурировать маршрутизатор
+
+func (a *API) configureRouterField() {
+	a.router.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte("Hello! API!"))
+	})
+
 }

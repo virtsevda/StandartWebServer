@@ -1,12 +1,18 @@
 package api
 
-import "github.com/sirupsen/logrus"
+import (
+	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
+)
 
 //Base API server instace
 type API struct {
 	//UNEXPORTED field
 	config *Config
 	logger *logrus.Logger
+	router *mux.Router
 }
 
 //Api constructor: buil base API instace
@@ -14,6 +20,7 @@ func New(config *Config) *API{
 	return &API{
 		config: config,
 		logger: logrus.New(),
+		router: mux.NewRouter(),
 	}
 }
 
@@ -26,5 +33,10 @@ func (api *API) Start() error{
 	
 	api.logger.Info("Starting api server at port:",api.config.BindAddr)
 
-	return nil
+	//Конфигирурируем роутер
+	api.configureRouterField()
+
+	//
+
+	return http.ListenAndServe(api.config.BindAddr,api.router)
 }
