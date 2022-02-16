@@ -40,6 +40,7 @@ func main() {
 			log.Println("Can not find configs file. Using default values:",err)
 		}
 		config.BindAddr = os.Getenv("bind_addr")
+		config.LoggerLevel = os.Getenv("logger_level")
 	}
 
 
