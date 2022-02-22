@@ -12,6 +12,8 @@ import (
 type Storage struct{
 	config *Config
 	db *sql.DB
+	userRepository *UserRepository
+	articleRepository *ArticleRepository
 
 }
 
@@ -40,4 +42,29 @@ func (storage *Storage) Open() error{
 
 func (storage *Storage) Close() {
 	storage.db.Close()
+}
+
+
+
+
+//public Repo for User
+func (storage *Storage) User() *UserRepository{
+	if storage.userRepository !=nil{
+		return storage.userRepository
+	}
+	storage.userRepository = &UserRepository{
+		storage: storage,
+	}
+	return nil
+}
+
+//public Repo for Article
+func (storage *Storage) Article() *ArticleRepository{
+	if storage.articleRepository !=nil{
+		return storage.articleRepository
+	}
+	storage.articleRepository = &ArticleRepository{
+		storage: storage,
+	}
+	return nil
 }

@@ -15,6 +15,7 @@ type API struct {
 	logger *logrus.Logger
 	router *mux.Router
 	storage *storage.Storage
+
 }
 
 //Api constructor: buil base API instace
@@ -35,6 +36,7 @@ func (api *API) Start() error{
 	
 	api.logger.Info("Starting api server at port:",api.config.BindAddr)
 
+	
 	//Конфигирурируем роутер
 	api.configureRouterField()
 

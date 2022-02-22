@@ -9,6 +9,8 @@ type Config struct{
 
 	//Logger level
 	LoggerLevel string `toml:"logger_level"`
+
+	//Storage
 	Storage *storage.Config
 }
 

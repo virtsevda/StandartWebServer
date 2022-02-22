@@ -1,13 +1,14 @@
 package api
 
 import (
-	"net/http"
-
 	_ "github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"github.com/virtsevda/StandartWebServer/storage"
 )
 
+var (
+	prefix string ="/api/v1"
+)
 //Пытаем сконфигурировать api instance
 func (a *API) configureLoggerField() error {
 	log_level, err := logrus.ParseLevel(a.config.LoggerLevel)
@@ -22,11 +23,18 @@ func (a *API) configureLoggerField() error {
 
 //Пытаемся сконфигурировать маршрутизатор
 func (a *API) configureRouterField() {
-	a.router.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		rw.Write([]byte("Hello! API!"))
-	})
 
+
+	a.router.HandleFunc(prefix+"/articles", a.GetAllArticles).Methods("GET")
+	a.router.HandleFunc(prefix+"/articles/{id}", a.GetArticleById).Methods("GET")
+	a.router.HandleFunc(prefix+"/articles/{id}", a.DeleteArticleById).Methods("DELETE")
+	a.router.HandleFunc(prefix+"/articles/{id}", a.UpdateArticleById).Methods("PUT")
+	a.router.HandleFunc(prefix+"/articles", a.PostArticle).Methods("POST")
+
+	a.router.HandleFunc(prefix+"/user/register", a.PostUserRegister).Methods("POST")
+	
 }
+
 
 //Пытаемся скофнигурировать наше хранилище
 func (a *API) configureStorageField() error{
@@ -38,3 +46,5 @@ func (a *API) configureStorageField() error{
 	a.storage = storage
 	return nil
 }
+
+
